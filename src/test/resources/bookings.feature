@@ -48,12 +48,19 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
       | Double |
       | Suite  |
 
-  @EndToEnd @Positive
+  @EndToEnd @Positive @Regression
   Scenario: Perform an end-to-end room booking flow and validate all operations
     Given user creates a room booking with following details
       | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  |
       | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 |
     Then user should book the room successfully with status as 201
+    #------Room Confirmation Validation in Summary & Report-----#
+    And the admin verifies that the updated user details are correctly reflected in the room summary
+      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  |
+      | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 |
+    Then the admin confirms that the same user details are updated in the booking report:
+      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  |
+      | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 |
     #------------------- Updating ------------------------------#
     When the user retrieves the booking ID from the booking confirmation response
     And the user updates the booking using the retrieved booking ID with the following details
