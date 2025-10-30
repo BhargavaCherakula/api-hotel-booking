@@ -27,7 +27,7 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
     Given user creates a room booking with following details
       | FirstName   | LastName   | EmailID   | PhoneNumber   | Check-in  | Check-Out  | roomType   | depositPaid   |
       | <firstName> | <lastName> | <emailID> | <phoneNumber> | <checkIn> | <checkout> | <roomType> | <depositPaid> |
-    Then user should receive an appropriate error message with status as 400
+    Then user should receives a response with status code 400
     And user should receive an error response "<error>"
     Examples:
       | firstName           | lastName                        | emailID                | phoneNumber            | checkIn    | checkout   | roomType | error                               | depositPaid |
