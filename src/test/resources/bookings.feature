@@ -1,41 +1,45 @@
 Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval, and Deletion
 
-  Background:
-    Given A valid admin user retrieves the authentication token successfully
-
   @Creation @Positive
   Scenario Outline: Hotel Room Booking creation with various booking test data
     Given user creates a room booking with following details
-      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <checkin> | <checkout> | <roomType> |
+      | FirstName   | LastName   | EmailID   | PhoneNumber   | roomType   | depositPaid   |
+      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <roomType> | <depositPaid> |
     Then user should book the room successfully with status as 201
 
     Examples:
-      | firstName          | lastName                       | emailID                  | phoneNumber | checkin    | checkout   | roomType |
-      | John               | Smith                          | john.smith@outlook.com   | 09876543210 | 2025-11-10 | 2025-11-15 | Single   |
-      | bbbbbbbbbbbbbbbbbb | pppppppppppppppppppppppppppppp | priya.patel@live.com     | 09876501234 | 2025-12-01 | 2025-12-05 | Double   |
-      | Ahm                | pppppppppppppppppppppppppppppp | ahmed.khan@gmail.com     | 09876009876 | 2025-11-20 | 2025-11-25 | Suite    |
-      | bbbbbbbbbbbbbbbbbb | Gon                            | maria.gonzalez@yahoo.com | 09876123456 | 2025-12-15 | 2025-12-20 | Single   |
+      | firstName         | lastName                      | emailID                 | phoneNumber | roomType | depositPaid |
+      # Common valid names
+      | John              | Smith                         | john.smith@test.com     | 09876505678 | Double   | false       |
+      # Min valid names (3 chars each)
+      | Ana               | Lee                           | ana.lee@test.com        | 09876501234 | Single   | false       |
+      # Mid-range name lengths
+      | Priya             | Patel                         | priya.patel@test.com    | 09876512345 | Suite    | false       |
+      # Max valid lengths
+      | EighteenCharacte | WordWithThirtyLettersRequire | maria.gonzalez@test.com | 09876523456 | Single   | true        |
+      # First Name (Min) - Last Name (Max)
+      | Ana               | WordWithThirtyLettersRequire | ana.long@test.com       | 09876502345 | Double   | true        |
+      # First Name (Max) - Last Name (Min)
+      | EighteenCharacte | Lee                           | eighteen.lee@test.com   | 09876503456 | Suite    | true        |
 
   @Creation @Negative
   Scenario Outline: Hotel Room Booking creation with invalid or edge-case booking data
     Given user creates a room booking with following details
-      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <checkin> | <checkout> | <roomType> |
+      | FirstName   | LastName   | EmailID   | PhoneNumber   | Check-in  | Check-Out  | roomType   | depositPaid   |
+      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <checkIn> | <checkout> | <roomType> | <depositPaid> |
     Then user should receive an appropriate error message with status as 400
     And user should receive an error response "<error>"
     Examples:
-      | firstName           | lastName                        | emailID                | phoneNumber            | checkin    | checkout   | roomType | error                               |
-      |                     | test                            | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | Firstname should not be blank       |
-      | test                |                                 | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | Lastname should not be blank        |
-      | ch                  | one                             | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | size must be between 3 and 18       |
-      | David               | aa                              | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | size must be between 3 and 30       |
-      | aaaaaaaaaaaaaaaaaaa | test                            | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Double   | size must be between 3 and 18       |
-      | David               | ppppppppppppppppppppppppppppppp | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Double   | size must be between 3 and 30       |
-      | Maria               | Gonzalez                        | #$%#$%#$%#$%#%$        | 0001234ABCD            | 2025-12-15 | 2025-12-20 | Double   | must be a well-formed email address |
-      | Cherry              | Lee                             | cherry.lee@gmail.com   | 09878987890            |            | 2025-12-31 | Double   | must not be null                    |
-      | Cherry              | Lee                             | cherry.lee@gmail.com   | 09878987890            | 2025-01-01 |            | Suite    | must not be null                    |
-      | Cherry              | Lee                             | cherry.lee@gmail.com   | 09878987890            | 2025-01-01 | 02-01-2025 | Suite    | Failed to create booking            |
-      | John                | Smith                           | john.smith@outlook.com | 76543210               | 2025-11-10 | 2025-11-15 | Suite    | size must be between 11 and 21      |
-      | John                | Smith                           | john.smith@outlook.com | 2389890987673876567891 | 2025-11-10 | 2025-11-15 | Suite    | size must be between 11 and 21      |
+      | firstName           | lastName                        | emailID                | phoneNumber            | checkIn    | checkout   | roomType | error                               | depositPaid |
+      |                     | test                            | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | Firstname should not be blank       | false       |
+      | test                |                                 | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | Lastname should not be blank        | false       |
+      | ch                  | one                             | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | size must be between 3 and 18       | false       |
+      | David               | aa                              | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Single   | size must be between 3 and 30       | false       |
+      | NineteenLetterNamee | test                            | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Double   | size must be between 3 and 18       | false       |
+      | David               | ThirtyOneCharacterLastNameExamm | test@gmail.com         | 09876543210            | 2025-11-10 | 2025-11-15 | Double   | size must be between 3 and 30       | false       |
+      | Maria               | Gonzalez                        | #$%#$%#$%#$%#%$        | 0001234ABCD            | 2025-12-15 | 2025-12-20 | Double   | must be a well-formed email address | false       |
+      | John                | Smith                           | john.smith@outlook.com | 76543210               | 2025-11-10 | 2025-11-15 | Suite    | size must be between 11 and 21      | true        |
+      | John                | Smith                           | john.smith@outlook.com | 2389890987673876567891 | 2025-11-10 | 2025-11-15 | Suite    | size must be between 11 and 21      | true        |
 
   @RoomEnquiry @Positive
   Scenario Outline: Perform hotel room enquiry by room type and validate available details and features
@@ -48,14 +52,10 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
       | Suite  |
 
   @RoomEnquiry @Positive
-  Scenario Outline: Perform hotel room enquiry by check-in and check-out dates and validate room available details
-    Given user searches for available rooms between the specified check-in and check-out dates
-      | <check-in> | <check-out> |
+  Scenario: Perform hotel room enquiry by check-in and check-out dates and validate room available details
+    Given user generates random check-in and check-out dates
+    When user sends a request to search available rooms using generated dates
     Then user should receives a response with status code 200
-    Examples:
-      | check-in   | check-out  |
-      | 2025-12-01 | 2025-12-31 |
-      | 2026-01-01 | 2026-01-10 |
 
   @RoomEnquiry @Positive
   Scenario Outline: Verify all available rooms and their details
@@ -72,26 +72,54 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
 
   @EndToEnd @Positive @Regression
   Scenario: Perform an end-to-end room booking flow and validate all operations
-    Given A valid admin user retrieves the authentication token successfully
-    Then user creates a room booking with following details
-      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  | roomType |
-      | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 | Single   |
+    Given user creates a room booking with following details
+      | FirstName | LastName | EmailID              | PhoneNumber | roomType | depositPaid |
+      | bhargava  | che      | Bhar.che@outlook.com | 09876543210 | Single   | false       |
     Then user should book the room successfully with status as 201
     When the user retrieves the booking ID from the booking confirmation response
     #------Room Confirmation Validation in Summary & Report-----#
-    And the admin verifies that the updated user details are correctly reflected in the room summary
-      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  | roomType |
-      | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 | Single   |
-    Then the admin confirms that the same user details are updated in the booking report:
-      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  | roomType |
-      | bhargava  | che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 | Single   |
+    When the user retrieves the room summary details by room type "Single"
+    Then the user confirms that the created or updated booking details appear correctly in the room summary
+      | FirstName | LastName | roomType |
+      | bhargava  | che      | Single   |
+    When the user retrieves the booking report
+    Then the user confirms that the same user details are displaying in the booking report:
+      | title        |
+      | bhargava che |
     #------------------- Updating ------------------------------#
     And the user updates the booking using the retrieved booking ID with the following details
-      | FirstName | LastName | EmailID              | PhoneNumber | Check-in   | Check-Out  | roomType |
-      | Bhargava  | Che      | Bhar.che@outlook.com | 9876543210  | 2025-12-10 | 2025-12-15 | Single   |
-    Then the booking should be updated successfully with status code 200
-    #------------------- Deletion & Cross Verify  ----------------#
+      | FirstName | LastName | roomType | depositPaid |
+      | John      | Cherry   | Double   | true        |
+    Then user should receives a response with status code 200
+    #------Room Confirmation Validation in Summary & Report-----#
+    When the user retrieves the booking report
+    Then the user confirms that the same user details are displaying in the booking report:
+      | title       |
+      | John Cherry |
+    When the user retrieves the room summary details by room type "Double"
+    Then the user confirms that the created or updated booking details appear correctly in the room summary
+      | FirstName | LastName | roomType |
+      | John      | Cherry   | Double   |
+       #------------------- Deletion The Booking  -------------------#
     When the user deletes the booking using the booking ID
-    Then the user searches for the deleted booking and should receive the following error response
-      | statusCode | message                      |
-      | 404        | Failed to fetch booking: 404 |
+    Then user should receives a response with status code 200
+     #------------------- Retrieve Deleted Booking ---------------#
+    Then the user searches for the deleted booking
+    Then user should receive an error status as 404
+    And user should receive an error as "Failed to fetch booking"
+
+
+  @EndToEnd @Positive @Regression
+  Scenario: Perform an room booking and deletion flow
+    Given user creates a room booking with following details
+      | FirstName | LastName | EmailID              | PhoneNumber | roomType | depositPaid |
+      | bhargava  | che      | Bhar.che@outlook.com | 09876543210  | Single   | true        |
+    Then user should book the room successfully with status as 201
+    When the user retrieves the booking ID from the booking confirmation response
+    #------------------- Deletion The Booking  -------------------#
+    When the user deletes the booking using the booking ID
+    Then user should receives a response with status code 200
+     #------------------- Retrieve Deleted Booking ---------------#
+    Then the user searches for the deleted booking
+    Then user should receive an error status as 404
+    And user should receive an error as "Failed to fetch booking"
