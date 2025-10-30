@@ -63,7 +63,11 @@ public class BaseTest {
         }
     }
 
-
+    /**
+     * Sends a POST request to create a new room booking.
+     * @return
+     * @throws JsonProcessingException
+     */
     public Response postBookingRequest() throws JsonProcessingException {
         String reqBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(bookingRequest);
         Log4jUtils.info("Booking Request Payload: \n" + reqBody);
@@ -72,6 +76,65 @@ public class BaseTest {
                 .given().contentType("application/json").accept("application/json").body(reqBody)
                 .when().post(res_booking)
                 .then().extract().response();
+    }
+
+    /**
+     * Sends a simple GET request to retrieve details for a specific room by its ID
+     * @param roomId
+     * @return
+     */
+    public Response getRequestWithoutBody(int roomId) {
+        String baseUrl = ConfigReader.getBaseUrl();
+        String path = res_room + "/" + roomId;
+        Log4jUtils.info("Sending GET request to: " + baseUrl + path);
+        return RestAssured
+                .given()
+                .baseUri(baseUrl)
+                .when()
+                .get(path)
+                .then()
+                .extract()
+                .response();
+    }
+
+    /**
+     * Sends a GET request to retrieve available rooms for a specific check-in and check-out date range
+     * @param checkIn
+     * @param checkOut
+     * @return
+     */
+    public Response getRequestWithoutBody(String checkIn, String checkOut) {
+        String baseUrl = ConfigReader.getBaseUrl();
+        Log4jUtils.info(String.format(
+                "Sending GET request to: %s%s?checkin=%s&checkout=%s",
+                baseUrl, res_room, checkIn, checkOut));
+        return RestAssured
+                .given()
+                .baseUri(baseUrl)
+                .queryParam("checkin", checkIn)
+                .queryParam("checkout", checkOut)
+                .when()
+                .get(res_room)
+                .then()
+                .extract()
+                .response();
+    }
+
+    /**
+     * Sends a GET request to retrieve all available rooms without applying any filters.
+     * @return
+     */
+    public Response getListOfRooms() {
+        String baseUrl = ConfigReader.getBaseUrl();
+        Log4jUtils.info("Sending GET request to: " + baseUrl + res_room);
+        return RestAssured
+                .given()
+                .baseUri(baseUrl)
+                .when()
+                .get(res_room)
+                .then()
+                .extract()
+                .response();
     }
 
 }

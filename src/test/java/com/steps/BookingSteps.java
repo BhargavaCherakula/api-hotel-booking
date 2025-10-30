@@ -11,10 +11,14 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.containsString;
 
 public class BookingSteps extends BaseTest {
     public static String cacheKey;
@@ -22,7 +26,7 @@ public class BookingSteps extends BaseTest {
     public static int bookingId;
 
     @Given("A valid admin user retrieves the authentication token successfully")
-    public void aValidAdminUserRetrievesTheAuthenticationTokenSuccessfully() throws JsonProcessingException {
+    public void getAuthToken() throws JsonProcessingException {
         Log4jUtils.info("Initializing admin authentication process...");
         loginRequest.setUserName(ConfigReader.getUsername());
         loginRequest.setPassword(ConfigReader.getPassword());
@@ -32,7 +36,7 @@ public class BookingSteps extends BaseTest {
     }
 
     @Given("user creates a room booking with following details")
-    public void userCreatesARoomBookingWithFollowingDetails(DataTable dataTable) throws JsonProcessingException {
+    public void createBooking(DataTable dataTable) throws JsonProcessingException {
         List<List<String>> bookingData = dataTable.asLists(String.class);
         bookingRequest.setRoomid(getRoomId(bookingData.get(0).get(6)));
         bookingRequest.setFirstname(bookingData.get(0).get(0));
@@ -47,14 +51,14 @@ public class BookingSteps extends BaseTest {
     }
 
     @Then("user should book the room successfully with status as {int}")
-    public void userShouldBookTheRoomSuccessfullyWithStatusAs(int statusCode) {
+    public void verifyBookingStatus(int statusCode) {
         Log4jUtils.info("Validating response status code.");
         assertThat("Unexpected response code", response.getStatusCode(), equalTo(statusCode));
         Log4jUtils.info("Response status code verified: " + response.getStatusCode());
     }
 
     @Then("user should receive an appropriate error message with status as {int}")
-    public void userShouldReceiveAnAppropriateErrorMessageWithStatusAs(int statusCode) {
+    public void verifyErrorStatus(int statusCode) {
         Log4jUtils.info("Validating error response status code.");
         assertThat("Unexpected response code", response.getStatusCode(), equalTo(statusCode));
         Log4jUtils.info("Response status code verified: " + response.getStatusCode());
@@ -62,17 +66,16 @@ public class BookingSteps extends BaseTest {
     }
 
     @And("user should receive an error response {string}")
-    public void userShouldReceiveAnErrorResponse(String arg0) {
-    }
-
-    @Given("the user performs a room search and receives a response with status code {int}")
-    public void theUserPerformsARoomSearchAndReceivesAResponseWithStatusCode(int arg0) {
-        System.out.println("Hello...");
-
+    public void verifyErrorMessage(String error) {
+        Log4jUtils.info("Validating API error response.");
+        assertThat("Erro messagee is not showing as expected",
+                response.jsonPath().getList("errors").get(0).toString(), containsString(error));
+        Log4jUtils.info("Error response validation passed. The expected error message '{}' was found." + error);
     }
 
     @Then("the user verifies the available room types and their features")
-    public void theUserVerifiesTheAvailableRoomTypesAndTheirFeatures() {
+    public void verifyRoomDetails() {
+
 
     }
 
@@ -109,12 +112,73 @@ public class BookingSteps extends BaseTest {
     public void theAdminConfirmsThatTheSameUserDetailsAreUpdatedInTheBookingReport() {
     }
 
-    @Given("the user sends a request to retrieve all available rooms and receives a {int} OK response")
-    public void theUserSendsARequestToRetrieveAllAvailableRoomsAndReceivesAOKResponse(int arg0) {
-
+    @Given("the user sends a request to retrieve all available rooms")
+    public void getAllRooms() {
+        response = getListOfRooms();
     }
 
     @Then("the user should see the following room types with correct accessibility, image, description, features, and price information")
-    public void theUserShouldSeeTheFollowingRoomTypesWithCorrectAccessibilityImageDescriptionFeaturesAndPriceInformation() {
+    public void verifyRoomInfo(DataTable dataTable) {
+        Log4jUtils.info("Starting validation of room details against API response...");
+        List<List<String>> roomData = dataTable.asLists(String.class);
+        List<Map<String, Object>> roomsList = response.jsonPath().getList("rooms");
+
+        String roomType = roomData.get(0).get(0);
+        boolean accessible = Boolean.parseBoolean(roomData.get(0).get(1));
+        String image = roomData.get(0).get(2);
+        String description = roomData.get(0).get(3);
+        List<String> features = Arrays.asList(roomData.get(0).get(4).split(","));
+        int price = Integer.parseInt(roomData.get(0).get(5));
+
+        //-- to check the expected room object under rooms array
+        Map<String, Object> actualRoom = null;
+        for (Map<String, Object> room : roomsList) {
+            if (room.get("type").equals(roomType)) {
+                actualRoom = room;
+                break;
+            }
+        }
+        if (actualRoom == null) {
+            throw new AssertionError("Expected room type is not found in the response: " + roomType);
+        }
+
+        Log4jUtils.info("Found room type '" + roomType + "' in response. Validating attributes...");
+
+        assertThat("The accessible mismatch for the room" + roomType,
+                actualRoom.get("accessible"), equalTo(accessible));
+        assertThat("The Image path mismatch for the room: " + roomType,
+                actualRoom.get("image"), equalTo(image));
+        assertThat("The description mismatch for room: " + roomType,
+                actualRoom.get("description").toString(), containsString(description));
+        assertThat("The price mismatch for room: " + roomType,
+                ((Number) actualRoom.get("roomPrice")).intValue(), equalTo(price));
+        List<String> actualFeatures = (List<String>) actualRoom.get("features");
+        for (String feature : features) {
+            assertThat("The feature missing in the room: " + roomType,
+                    actualFeatures, hasItem(feature));
+        }
+        Log4jUtils.info("All room details successfully validated against expected feature file data.");
+    }
+
+    @Given("the user performs a room search by room type as {string}")
+    public void searchByRoomType(String roomType) {
+        int id = getRoomId(roomType);
+        response = getRequestWithoutBody(id);
+    }
+
+    @Given("user searches for available rooms between the specified check-in and check-out dates")
+    public void searchByDates(DataTable dataTable) {
+        List<List<String>> bookingData = dataTable.asLists(String.class);
+        String checkInDate = bookingData.get(0).get(0);
+        String checkOutDate = bookingData.get(0).get(1);
+        response = getRequestWithoutBody(checkInDate, checkOutDate);
+    }
+
+    @Then("user should receives a response with status code {int}")
+    public void userShouldReceivesAResponseWithStatusCode(int statusCode) {
+        Log4jUtils.info("Validating response status code.");
+        assertThat("Unexpected response code", response.getStatusCode(), equalTo(statusCode));
+        Log4jUtils.info("Response status code verified: " + response.getStatusCode());
+        Log4jUtils.info("Response payload:\n " + response.asString());
     }
 }
