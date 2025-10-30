@@ -2,7 +2,6 @@ package com.steps;
 
 import com.base.BaseTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.model.request.LoginRequest;
 import com.utils.ConfigReader;
 import com.utils.Log4jUtils;
 import io.cucumber.java.en.And;
@@ -19,7 +18,6 @@ public class AdminSteps extends BaseTest {
     public static String password;
     public static Response response;
     public static String cacheKey;
-    private final LoginRequest loginRequest = new LoginRequest();
 
 
     @Given("the secure admin credentials have been provisioned")
@@ -36,7 +34,7 @@ public class AdminSteps extends BaseTest {
         Log4jUtils.info("Sending POST request to login endpoint with admin credentials.");
         loginRequest.setUserName(username);
         loginRequest.setPassword(password);
-        response = postLoginRequest(loginRequest);
+        response = postLoginRequest();
         Log4jUtils.info("Login request submitted successfully.");
     }
 

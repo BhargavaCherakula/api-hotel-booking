@@ -8,7 +8,6 @@ public class BookingRequest {
     private BookingDates bookingdates;
     private String email;
     private String phone;
-    private int bookingId;
 
     public BookingRequest(){}
 
@@ -66,13 +65,5 @@ public class BookingRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public int getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(int bookingId) {
-        this.bookingId = bookingId;
     }
 }
