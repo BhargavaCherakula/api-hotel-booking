@@ -35,19 +35,3 @@ jobs:
         with:
           name: ExtentReport
           path: target/extent-reports/ExtentReport.html
-
-      # Upload Cucumber HTML Report
-      - name: Upload Cucumber HTML Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: CucumberHTMLReport
-          path: target/cucumber-reports/cucumber.html
-
-      # Upload Cucumber JSON Report (optional)
-      - name: Upload Cucumber JSON Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: CucumberJSON
-          path: target/cucumber-reports/cucumber.json
