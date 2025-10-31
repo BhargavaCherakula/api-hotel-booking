@@ -49,13 +49,24 @@ The objective of this exercise is to demonstrate API testing and Java proficienc
 
 ### To Run The Suite Offline
     mvn test
+      [OR]
+We can 'TestRunner.java' file directly
+
 ### Admin Feature:
+**Run Complete Feature**
+* mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucumber.filter.tags="@Admin"
+
 **Run Negative Tests**:
 * mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucumber.filter.tags="@Negative"
 
 **Run Positive Tests**:
 * mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucumber.filter.tags="@Positive"
+
 ### Bookings Feature:
+
+**Run Complete Feature**
+mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucumber.filter.tags="@Bookings"
+
 **Run Negative Tests**:
 * mvn test -Dcucumber.features="src/test/resources/features/bookings.feature" -Dcucumber.filter.tags="@Negative"
 

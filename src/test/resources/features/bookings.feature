@@ -1,4 +1,4 @@
-@BookingTestSuite
+@BookingTestSuite  @Bookings
 Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval, and Deletion
 
   @Creation @Positive
