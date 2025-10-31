@@ -45,7 +45,7 @@ The objective of this exercise is to demonstrate API testing and Java proficienc
 ### To Run The Suite Using GitActions
 * #### Click this url path - https://github.com/BhargavaCherakula/api-hotel-booking/actions/workflows/api-tests.yml
 * #### Click on 'Run workflow' button under 'Run workflow' dropdown shown in screen
-    ![Screenshot](.etc/RunWorkFlowScreen.jpg)
+![RunWorkFlowScreen](https://github.com/user-attachments/assets/d078d0a1-2b72-4423-8598-4ce2275e9f1e)
 
 ### To Run The Suite Offline
     mvn test
@@ -90,7 +90,10 @@ mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucum
 * Double-click ExtentReport.html
 * View detailed results
 
-### ExtentReport Report Sample
-#### 👉 [Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
+### ExtentReport Report Sample:
+### 👉 [Executed Full Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
+#### Sample:
+#![test results sample](https://github.com/user-attachments/assets/e7521c55-eaeb-42b7-9439-0e652fb3079f)
+
 
 ### ---------- Happy Testing -------------
