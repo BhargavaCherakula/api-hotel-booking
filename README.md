@@ -75,6 +75,6 @@ The objective of this exercise is to demonstrate API testing and Java proficienc
 * View detailed results
 
 ### ExtentReport Report Sample
-👉 [Extent Report Sample (HTML)] (etc/ExtentReport.html)
+#### 👉 [Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
 
 ### ---------- Happy Testing -------------

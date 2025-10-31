@@ -34,7 +34,7 @@ public class BookingSteps extends BaseTest {
 
     @Given("user creates a room booking with following details")
     public void createBooking(DataTable dataTable) throws JsonProcessingException, InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         List<List<String>> bookingData = dataTable.asLists(String.class);
         getDates = getRandomCheckInAndCheckOutDates("yyyy-MM-dd");
         bookingRequest.setRoomid(getRoomId(bookingData.get(1).get(4)));
@@ -79,7 +79,8 @@ public class BookingSteps extends BaseTest {
     }
 
     @And("the user updates the booking using the retrieved booking ID with the following details")
-    public void updateBooking(DataTable dataTable) throws JsonProcessingException {
+    public void updateBooking(DataTable dataTable) throws JsonProcessingException, InterruptedException {
+        Thread.sleep(2000);
         List<List<String>> updatedBookingData = dataTable.asLists(String.class);
         getDates = getRandomCheckInAndCheckOutDates("yyyy-MM-dd");
         updateBookingRequest.setBookingid(bookingId);

@@ -1,24 +1,22 @@
 package com.utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
+    private static final String configPath = "src/test/resources/config.properties";
     private static final Properties prop = new Properties();
 
     private ConfigReader() {
     }
 
     static {
-        try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties");
-        ) {
-            if (input == null) {
-                throw new RuntimeException("config.properties file not found in classpath!");
-            }
+        try (InputStream input = new FileInputStream(configPath)) {
             prop.load(input);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load config.properties ", e);
+            throw new RuntimeException("Failed to load config file from: " + configPath, e);
         }
     }
 
@@ -31,13 +29,17 @@ public class ConfigReader {
     public static String getProperty(String key) {
         String value = prop.getProperty(key);
         if (value == null || value.isEmpty()) {
-            throw new IllegalArgumentException("Property '" + key + "' not found in config.properties");
+            throw new IllegalArgumentException("Property '" + key + "' not found in " + configPath);
         }
         return value.trim();
     }
 
     public static String getBaseUrl() {
         return getProperty("base.url");
+    }
+
+    public static String getContentType() {
+        return getProperty("content.type");
     }
 
     /**

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5p - %m%n"/>
+        </Console>
+        <File name="File" fileName="logs/test.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %-5p - %m%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <!-- Suppress Cucumber hook logs -->
+        <Logger name="io.cucumber" level="WARN" additivity="false"/>
+        <Logger name="com.hooks.Hooks" level="OFF" additivity="false"/>
+
+        <!-- Your application logs -->
+        <Logger name="com.example.apihotelbookings" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,3 +1,4 @@
+@BookingTestSuite
 Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval, and Deletion
 
   @Creation @Positive
@@ -6,7 +7,6 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
       | FirstName   | LastName   | EmailID   | PhoneNumber   | roomType   | depositPaid   |
       | <firstName> | <lastName> | <emailID> | <phoneNumber> | <roomType> | <depositPaid> |
     Then user should book the room successfully with status as 201
-
     Examples:
       | firstName         | lastName                      | emailID                 | phoneNumber | roomType | depositPaid |
       # Common valid names
@@ -113,7 +113,7 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
   Scenario: Perform an room booking and deletion flow
     Given user creates a room booking with following details
       | FirstName | LastName | EmailID              | PhoneNumber | roomType | depositPaid |
-      | bhargava  | che      | Bhar.che@outlook.com | 09876543210  | Single   | true        |
+      | pavithra  | che      | pavi.che@outlook.com | 09876543210  | Single   | true        |
     Then user should book the room successfully with status as 201
     When the user retrieves the booking ID from the booking confirmation response
     #------------------- Deletion The Booking  -------------------#

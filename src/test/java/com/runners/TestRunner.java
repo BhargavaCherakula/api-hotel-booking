@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
                 "json:target/cucumber-reports/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
         },
-        tags = "@Positive",
+        tags = "@BookingTestSuite",
         monochrome = true
 )
 

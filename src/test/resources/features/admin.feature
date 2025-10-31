@@ -1,3 +1,4 @@
+@BookingTestSuite
 Feature: Admin Authentication and Cache Key Retrieval
 
   @AdminLogin @Positive

@@ -29,6 +29,7 @@ public class BaseTest {
     protected UpdateBookingRequest updateBookingRequest = new UpdateBookingRequest();
     ObjectMapper objectMapper = new ObjectMapper();
     private String cacheKey;
+    private static final String CONTENT_TYPE = ConfigReader.getContentType();
 
     /**
      * to post the login request and return the response
@@ -39,7 +40,7 @@ public class BaseTest {
         String reqBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(loginRequest);
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         return RestAssured
-                .given().contentType("application/json").accept("application/json").body(reqBody)
+                .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
                 .when().post(res_login)
                 .then().extract().response();
     }
@@ -82,7 +83,7 @@ public class BaseTest {
         Log4jUtils.info("Booking Request Payload: \n" + reqBody);
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         return RestAssured
-                .given().contentType("application/json").accept("application/json").body(reqBody)
+                .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
                 .when().post(res_booking)
                 .then().extract().response();
     }
@@ -227,7 +228,7 @@ public class BaseTest {
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         String path = res_booking + "/" + id;
         return RestAssured
-                .given().contentType("application/json").accept("application/json").body(reqBody)
+                .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
                 .cookie("token", getTokenKey())
                 .when().put(path)
                 .then().extract().response();
@@ -243,7 +244,7 @@ public class BaseTest {
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         String path = res_booking + "/" + id;
         return RestAssured
-                .given().contentType("application/json").accept("application/json")
+                .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE)
                 .cookie("token", getTokenKey())
                 .when().delete(path)
                 .then().extract().response();
@@ -259,7 +260,7 @@ public class BaseTest {
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         String path = res_booking + "/" + id;
         return RestAssured
-                .given().contentType("application/json").accept("application/json")
+                .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE)
                 .cookie("token", getTokenKey())
                 .when().get(path)
                 .then().extract().response();
