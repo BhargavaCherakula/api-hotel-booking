@@ -20,3 +20,5 @@ Feature: Admin Authentication and Cache Key Retrieval
       |          | password   |
       | admin    |            |
       | #%$#!)(  | 0987654321 |
+      | admin1   | password   |
+      | admin    | password1  |

@@ -3,26 +3,14 @@
     <configuration>
         <!-- Report Theme: STANDARD, DARK -->
         <theme>STANDARD</theme>
-
         <!-- Document Encoding -->
         <encoding>UTF-8</encoding>
-
         <!-- Title of Report -->
         <documentTitle>API Hotel Booking - Test Report</documentTitle>
-
         <!-- Name of Report -->
         <reportName>API Hotel Booking - Test Results (Developer: Bhargava C)</reportName>
-
         <!-- Timestamp Format -->
-        <timeStampFormat>MMM dd, yyyy HH:mm:ss</timeStampFormat>
-
-        <!-- JavaScript for console logs (IMPORTANT for showing logs) -->
-        <scripts>
-            <![CDATA[
-    ]]>
-        </scripts>
-
-
+        <timeStampFormat>MMM dd, HH:mm:ss</timeStampFormat>
         <!-- CSS Customization -->
         <css>
             <![CDATA[
