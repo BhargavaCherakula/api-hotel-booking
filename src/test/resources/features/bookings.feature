@@ -25,8 +25,8 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
   @Creation @Negative
   Scenario Outline: Hotel Room Booking creation with invalid or edge-case booking data
     Given user creates a room booking with following details
-      | FirstName   | LastName   | EmailID   | PhoneNumber   | Check-in  | Check-Out  | roomType   | depositPaid   |
-      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <checkIn> | <checkout> | <roomType> | <depositPaid> |
+      | FirstName   | LastName   | EmailID   | PhoneNumber   | roomType   | depositPaid   |
+      | <firstName> | <lastName> | <emailID> | <phoneNumber> | <roomType> | <depositPaid> |
     Then user should receives a response with status code 400
     And user should receive an error response "<error>"
     Examples:
@@ -113,7 +113,7 @@ Feature:Validate the complete Booking lifecycle — Creation, Update, Retrieval,
   Scenario: Perform an room booking and deletion flow
     Given user creates a room booking with following details
       | FirstName | LastName | EmailID              | PhoneNumber | roomType | depositPaid |
-      | pavithra  | che      | pavi.che@outlook.com | 09876543210  | Single   | true        |
+      | pavithra  | che      | pavi.che@outlook.com | 09876543210 | Single   | true        |
     Then user should book the room successfully with status as 201
     When the user retrieves the booking ID from the booking confirmation response
     #------------------- Deletion The Booking  -------------------#

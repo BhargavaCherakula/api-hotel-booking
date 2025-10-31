@@ -18,10 +18,10 @@ import java.util.List;
 
 public class BaseTest {
     //=== Endpoint Resources ===
-    private static final String res_login = "/api/auth/login";
-    private static final String res_booking = "/api/booking";
-    private static final String res_room = "/api/room";
-    private static final String res_report = "/api/report";
+    private static final String RES_LOGIN = "/api/auth/login";
+    private static final String RES_BOOKING = "/api/booking";
+    private static final String RES_ROOM = "/api/room";
+    private static final String RES_REPORT = "/api/report";
 
     protected LoginRequest loginRequest = new LoginRequest();
     protected BookingRequest bookingRequest = new BookingRequest();
@@ -41,7 +41,7 @@ public class BaseTest {
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         return RestAssured
                 .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
-                .when().post(res_login)
+                .when().post(RES_LOGIN)
                 .then().extract().response();
     }
 
@@ -68,7 +68,7 @@ public class BaseTest {
             case "suite":
                 return 3;
             default:
-                return 1;
+                throw new IllegalArgumentException("Unknown room type: " + roomType);
         }
     }
 
@@ -84,7 +84,7 @@ public class BaseTest {
         RestAssured.baseURI = ConfigReader.getBaseUrl();
         return RestAssured
                 .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
-                .when().post(res_booking)
+                .when().post(RES_BOOKING)
                 .then().extract().response();
     }
 
@@ -96,7 +96,8 @@ public class BaseTest {
      */
     public Response getRequestWithoutBody(int roomId) {
         String baseUrl = ConfigReader.getBaseUrl();
-        String path = res_room + "/" + roomId;
+        String path = RES_ROOM + "/" + roomId;
+        //user string formater
         Log4jUtils.info("Sending GET request to: " + baseUrl + path);
         return RestAssured
                 .given()
@@ -119,14 +120,14 @@ public class BaseTest {
         String baseUrl = ConfigReader.getBaseUrl();
         Log4jUtils.info(String.format(
                 "Sending GET request to: %s%s?checkin=%s&checkout=%s",
-                baseUrl, res_room, checkIn, checkOut));
+                baseUrl, RES_ROOM, checkIn, checkOut));
         return RestAssured
                 .given()
                 .baseUri(baseUrl)
                 .queryParam("checkin", checkIn)
                 .queryParam("checkout", checkOut)
                 .when()
-                .get(res_room)
+                .get(RES_ROOM)
                 .then()
                 .extract()
                 .response();
@@ -139,12 +140,12 @@ public class BaseTest {
      */
     public Response getListOfRooms() {
         String baseUrl = ConfigReader.getBaseUrl();
-        Log4jUtils.info("Sending GET request to: " + baseUrl + res_room);
+        Log4jUtils.info("Sending GET request to: " + baseUrl + RES_ROOM);
         return RestAssured
                 .given()
                 .baseUri(baseUrl)
                 .when()
-                .get(res_room)
+                .get(RES_ROOM)
                 .then()
                 .extract()
                 .response();
@@ -184,14 +185,14 @@ public class BaseTest {
         String baseUrl = ConfigReader.getBaseUrl();
         Log4jUtils.info(String.format(
                 "Sending GET request to: %s%s?roomid=%s",
-                baseUrl, res_booking, roomId));
+                baseUrl, RES_BOOKING, roomId));
         return RestAssured
                 .given()
                 .baseUri(baseUrl)
                 .queryParam("roomid", roomId)
                 .cookie("token", getTokenKey())
                 .when()
-                .get(res_booking)
+                .get(RES_BOOKING)
                 .then()
                 .extract()
                 .response();
@@ -204,13 +205,13 @@ public class BaseTest {
      */
     public Response getBookingReport() throws JsonProcessingException {
         String baseUrl = ConfigReader.getBaseUrl();
-        Log4jUtils.info("Sending GET request to: " + baseUrl + res_report);
+        Log4jUtils.info("Sending GET request to: " + baseUrl + RES_REPORT);
         return RestAssured
                 .given()
                 .baseUri(baseUrl)
                 .cookie("token", getTokenKey())
                 .when()
-                .get(res_report)
+                .get(RES_REPORT)
                 .then()
                 .extract()
                 .response();
@@ -226,7 +227,7 @@ public class BaseTest {
         String reqBody = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(updateBookingRequest);
         Log4jUtils.info("updated booking request payload: \n" + reqBody);
         RestAssured.baseURI = ConfigReader.getBaseUrl();
-        String path = res_booking + "/" + id;
+        String path = RES_BOOKING + "/" + id;
         return RestAssured
                 .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE).body(reqBody)
                 .cookie("token", getTokenKey())
@@ -242,7 +243,7 @@ public class BaseTest {
     public Response deleteBookingRequest(int id) throws JsonProcessingException {
         Log4jUtils.info("delete booking request, using booking id: " + id);
         RestAssured.baseURI = ConfigReader.getBaseUrl();
-        String path = res_booking + "/" + id;
+        String path = RES_BOOKING + "/" + id;
         return RestAssured
                 .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE)
                 .cookie("token", getTokenKey())
@@ -258,7 +259,7 @@ public class BaseTest {
     public Response getBookingRequest(int id) throws JsonProcessingException {
         Log4jUtils.info("get booking request, using booking id: " + id);
         RestAssured.baseURI = ConfigReader.getBaseUrl();
-        String path = res_booking + "/" + id;
+        String path = RES_BOOKING + "/" + id;
         return RestAssured
                 .given().contentType(CONTENT_TYPE).accept(CONTENT_TYPE)
                 .cookie("token", getTokenKey())
