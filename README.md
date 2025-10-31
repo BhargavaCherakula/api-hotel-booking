@@ -94,6 +94,7 @@ mvn test -Dcucumber.features="src/test/resources/features/admin.feature" -Dcucum
 ### 👉 [Executed Full Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
 #### Sample:
 #![test results sample](https://github.com/user-attachments/assets/e7521c55-eaeb-42b7-9439-0e652fb3079f)
+<img width="1260" height="1704" alt="_C__Users_cbhar_AppData_Local_Temp_51d78191-e5dc-494f-9754-e75d33c92aa0_ExtentReport%20(3) zip aa0_ExtentReport html(mac)" src="https://github.com/user-attachments/assets/49916c52-2355-4bbe-a58d-0b0c1d2fc8d1" />
 
 
 ### ---------- Happy Testing -------------
