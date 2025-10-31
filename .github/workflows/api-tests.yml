@@ -1,7 +1,7 @@
 name: Run API Automation Tests (Cucumber + Extent)
 
 on:
-  workflow_dispatch:   # manual trigger
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   run-api-tests:
@@ -25,7 +25,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run tests (mvn clean test)
+      - name: Run API Tests (mvn clean test)
         run: mvn clean test
 
       # Upload Extent Report
@@ -33,43 +33,21 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: extent-report
+          name: ExtentReport
           path: target/extent-reports/ExtentReport.html
 
-      # Upload Cucumber HTML
+      # Upload Cucumber HTML Report
       - name: Upload Cucumber HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-html-report
+          name: CucumberHTMLReport
           path: target/cucumber-reports/cucumber.html
 
-      # Upload Cucumber JSON
-      - name: Upload Cucumber JSON (optional)
+      # Upload Cucumber JSON Report (optional)
+      - name: Upload Cucumber JSON Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-json
+          name: CucumberJSON
           path: target/cucumber-reports/cucumber.json
-
-      # Prepare reports for GitHub Pages
-      - name: Prepare reports for GitHub Pages
-        if: always()
-        run: |
-          echo "Preparing reports for GitHub Pages..."
-          rm -rf gh-pages-output || true
-          mkdir -p gh-pages-output
-          if [ -f target/cucumber-reports/cucumber.html ]; then
-            cp target/cucumber-reports/cucumber.html gh-pages-output/cucumber.html
-          fi
-          if [ -f target/extent-reports/ExtentReport.html ]; then
-            cp -r target/extent-reports/* gh-pages-output/
-          fi
-
-      # ✅ Deploy reports to GitHub Pages
-      - name: Deploy reports to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./gh-pages-output
