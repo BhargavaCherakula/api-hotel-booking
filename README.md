@@ -42,7 +42,12 @@ The objective of this exercise is to demonstrate API testing and Java proficienc
 * **Navigate to and open the Test Pack named 'api-hotel-booking'.**
 * **Open the Command Prompt inside the Test Pack folder, then execute the commands below according to the testing flow you wish to perform.**
 
-### To Run The Suite
+### To Run The Suite Using GitActions
+* #### Click this url path - https://github.com/BhargavaCherakula/api-hotel-booking/actions/workflows/api-tests.yml
+* #### Click on 'Run workflow' button under 'Run workflow' dropdown shown in screen
+    ![Screenshot](.etc/RunWorkFlowScreen.jpg)
+
+### To Run The Suite Offline
     mvn test
 ### Admin Feature:
 **Run Negative Tests**:

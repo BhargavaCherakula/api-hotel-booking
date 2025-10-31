@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features/admin.feature",
+        features = "src/test/resources/features",
         glue = {"com.steps", "com.hooks"},
         plugin = {
                 "pretty",
@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
                 "json:target/cucumber-reports/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
         },
-        tags = "@Positive",
+        tags = "@BookingTestSuite",
         monochrome = true
 )
 
