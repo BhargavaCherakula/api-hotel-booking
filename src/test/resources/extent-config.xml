@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+    <configuration>
+        <!-- Report Theme: STANDARD, DARK -->
+        <theme>STANDARD</theme>
+
+        <!-- Document Encoding -->
+        <encoding>UTF-8</encoding>
+
+        <!-- Title of Report -->
+        <documentTitle>API Hotel Booking - Test Report</documentTitle>
+
+        <!-- Name of Report -->
+        <reportName>API Hotel Booking - Test Results (Developer: Bhargava C)</reportName>
+
+        <!-- Timestamp Format -->
+        <timeStampFormat>MMM dd, yyyy HH:mm:ss</timeStampFormat>
+
+        <!-- JavaScript for console logs (IMPORTANT for showing logs) -->
+        <scripts>
+            <![CDATA[
+    ]]>
+        </scripts>
+
+
+        <!-- CSS Customization -->
+        <css>
+            <![CDATA[
+                .step-details {
+                    background-color: #f5f5f5;
+                    padding: 10px;
+                    border-left: 3px solid #4CAF50;
+                    margin: 5px 0;
+                }
+                .log-entry {
+                    font-family: 'Courier New', monospace;
+                    color: #333;
+                    padding: 2px 0;
+                }
+            ]]>
+        </css>
+    </configuration>
+</extentreports>
