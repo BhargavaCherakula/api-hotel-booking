@@ -79,7 +79,10 @@ The objective of this exercise is to demonstrate API testing and Java proficienc
 * Double-click ExtentReport.html
 * View detailed results
 
-### ExtentReport Report Sample
-#### 👉 [Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
+### ExtentReport Report Sample:
+### 👉 [Executed Full Extent Report Sample (HTML)] : api-hotel-booking/etc/reports
+#### Sample:
+#![test results sample](https://github.com/user-attachments/assets/e7521c55-eaeb-42b7-9439-0e652fb3079f)
+
 
 ### ---------- Happy Testing -------------
